@@ -1,11 +1,11 @@
-import constants from '../constants';
+import constants from './utils/constants';
 
-
-
-register('command', (commandName, args) => {
+register('command', (commandName, ...args) => {
     switch (commandName) {
         case 'blastjegay':
             ChatLib.chat(`${constants.PREFIX} §c§fr fr`);
             break;
+        default:
+            break;
     }
-}).setName('hoppAddons').setAliases('ha');
+}).setName('hoppsikAddons').setAliases('ha');
