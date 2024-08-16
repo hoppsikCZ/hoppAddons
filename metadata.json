@@ -4,5 +4,5 @@
     "description": "WTF am i doing?",
     "version": "1.0.0",
     "entry": "index.js",
-    "requires": []
+    "requires": ["RenderLib"]
   }
