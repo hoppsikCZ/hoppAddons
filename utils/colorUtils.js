@@ -5,7 +5,7 @@ function redToGreen(value){
 }
 
 function chroma(){
-    var hue = (Date.now() % 360).toString(10);
+    var hue = (Date.now() / 100 % 360).toString(10);
     return ["hsl(",hue,",100%,50%)"].join("");
 }
 

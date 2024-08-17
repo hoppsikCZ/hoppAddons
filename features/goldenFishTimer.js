@@ -2,8 +2,9 @@ import constants from "../utils/constants"
 import worldData from "../utils/worldData";
 import colorUtils from "../utils/colorUtils";
 import settings from "../settings";
-import gui from "../utils/gui";
+import { createText } from "../utils/gui";
 
+const key = 'goldenFishTimer';
 const display = new Display();
 display.hide();
 display.addLine("§6§lGolden Fish Timer");
@@ -21,6 +22,8 @@ let fishingStart = -1;
 let lastCast = -1;
 let casting = false;
 let spawned = false;
+let active = false;
+let timeElapsed, timeSinceCast;
 
 register('worldLoad', () => {
     display.hide();
@@ -31,14 +34,12 @@ register('worldLoad', () => {
 
 register("step", () => {
     if (!worldData.skyblock || worldData.island !== "Crimson Isle" || !settings.goldenFishTimer) {
-        display.hide();
+        active = false;
         return;
     }
 
     if (Player.getPlayer() != null && Player.getPlayer().field_71104_cf != null) {
-        if (settings.goldenFishTimer) { 
-            display.show();
-        }
+        active = true;
         
         if (fishingStart == -1) {
             fishingStart = Date.now();
@@ -57,42 +58,52 @@ register("step", () => {
         return;
     }
 
-    let timeElapsed = Date.now() - fishingStart;
-    let timeSinceCast = Date.now() - lastCast;
+    timeElapsed = Date.now() - fishingStart;
+    timeSinceCast = Date.now() - lastCast;
 
     if (timeSinceCast >= timeLimit) {
-        display.hide();
+        active = false;
         fishingStart = -1;
         lastCast = -1;
-    } else {
-        if (casting) {
-            display.setLine(2, `§eCast until:           §a ${spawned ? 'Reling in!' : 'Casting!'}`);
-        } else {
-            display.setLine(2, `§eCast until:           ${timeSinceCast < (spawned ? spawnedTimeLimit : timeLimit) / 3 ? '§a' : 
-                (timeSinceCast < (spawned ? spawnedTimeLimit : timeLimit) / 3 * 2 ? '§e' : '§c')} ${
-                Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 / 60)}m ${
-                Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 % 60).toString().padStart(2, '0')}s`);
-        }
-
-        if (spawned) {
-            display.setLine(1, `§eSpawn possible: §a§l NOW! (SPAWNED)`);
-        } else if (timeElapsed < spawnTime) {
-            display.setLine(1, `§eSpawn possible: §6${Math.floor((spawnTime - timeElapsed) / 1000 / 60).toString().padStart(2, ' ')}m ${Math.floor((spawnTime - timeElapsed) / 1000 % 60).toString().padStart(2, '0')}s`);
-        } else {
-            display.setLine(1, `§eSpawn possible: §a§l NOW! §6(${Math.round((timeElapsed - spawnTime) / 300000 * 100)}%)`);
-        }
     }
 }).setFps(5)
 
+register('renderOverlay', () => {
+    if (settings.goldenFishTimer && active) {
+        createText(key, "§6§lGolden Fish Timer", 0, 0);
+
+        createText(key, `§eSpawn possible:`, 0, 10);
+        createText(key, `§eCast until:`, 0, 20);
+
+        if (casting) {
+            createText(key, `§a${spawned ? 'Reling in!' : 'Casting!'}`, 130, 20, true);
+        }
+        else {
+            createText(key, `${timeSinceCast < (spawned ? spawnedTimeLimit : timeLimit) / 3 ? '§a' : 
+                (timeSinceCast < (spawned ? spawnedTimeLimit : timeLimit) / 3 * 2 ? '§e' : '§c')} ${
+                Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 / 60)}m ${
+                Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 % 60).toString().padStart(2, '0')}s`, 130, 20, true);
+        }
+
+        if (spawned) {
+            createText(key, `§a§lSPAWNED!`, 130, 10, true);
+        } else if (timeElapsed < spawnTime) {
+            createText(key, `§6${Math.floor((spawnTime - timeElapsed) / 1000 / 60).toString().padStart(2, ' ')}m ${Math.floor((spawnTime - timeElapsed) / 1000 % 60).toString().padStart(2, '0')}s`, 130, 10, true);
+        } else {
+            createText(key, `§a§lNOW! §6${Math.round((timeElapsed - spawnTime) / 300000 * 100)}%`, 130, 10, true);
+        }
+    }
+});
+
 register('chat', (rarity) => {
-    display.hide();
+    active = false;
     fishingStart = -1;
     lastCast = -1;
     spawned = false;
 }).setChatCriteria('TROPHY FISH! You caught a Golden Fish ${rarity}.');
 
 register('chat', (rarity) => {
-    display.hide();
+    active = false;
     fishingStart = -1;
     lastCast = -1;
     spawned = false;
