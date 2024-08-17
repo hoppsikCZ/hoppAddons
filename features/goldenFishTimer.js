@@ -1,6 +1,8 @@
 import constants from "../utils/constants"
 import worldData from "../utils/worldData";
 import colorUtils from "../utils/colorUtils";
+import settings from "../settings";
+import gui from "../utils/gui";
 
 const display = new Display();
 display.hide();
@@ -28,15 +30,18 @@ register('worldLoad', () => {
 });
 
 register("step", () => {
-    if (!worldData.skyblock || worldData.island !== "Crimson Isle") {
+    if (!worldData.skyblock || worldData.island !== "Crimson Isle" || !settings.goldenFishTimer) {
         display.hide();
         return;
     }
 
     if (Player.getPlayer() != null && Player.getPlayer().field_71104_cf != null) {
+        if (settings.goldenFishTimer) { 
+            display.show();
+        }
+        
         if (fishingStart == -1) {
             fishingStart = Date.now();
-            display.show();
         }
 
         if (!spawned)

@@ -4,6 +4,6 @@ ChatLib.chat(constants.PREFIX + ' §7Loading!');
 
 import './commandManager.js';
 import './features/goldenFishTimer.js';
-import './features/trapperLocator.js';
+import './features/theodoliteHelper.js';
 
 ChatLib.chat(constants.PREFIX + ' §7Loaded!');
