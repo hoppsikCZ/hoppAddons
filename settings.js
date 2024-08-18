@@ -3,6 +3,8 @@ import {
     @CheckboxProperty,
     Color,
     @ColorProperty,
+    @SliderProperty,
+    @DecimalSliderProperty,
     @PercentSliderProperty,
     @SelectorProperty,
     @SwitchProperty,
@@ -54,6 +56,53 @@ class Settings {
     })
     goldenFishTimer = true;
 
+    @SwitchProperty({
+        name: '● Golden fish cast alert',
+        description: 'Alert x s before you need to cast a rod rod.',
+        category: 'Crimson Isles',
+        subcategory: 'Fishing',
+    })
+    goldenFishSoundAlert = true;
+
+    @PercentSliderProperty({
+        name: '   volume',
+        description: 'Volume of the golden fish sound alert.',
+        category: 'Crimson Isles',
+        subcategory: 'Fishing',
+    })
+    goldenFishSoundVolume = 0.5;
+
+    @DecimalSliderProperty({
+        name: '   pitch',
+        description: 'Pitch of the golden fish sound alert.',
+        category: 'Crimson Isles',
+        subcategory: 'Fishing',
+        minF: 0.5,
+        maxF: 2,
+        decimalPlaces: 1,
+    })
+    goldenFishSoundPitch = 1;
+
+    @SliderProperty({
+        name: '   time',
+        description: 'The time in seconds before the golden fish alert is triggered. (default: 30)',
+        category: 'Crimson Isles',
+        subcategory: 'Fishing',
+        min: 0,
+        max: 180,
+    })
+    goldenFishSoundTime = 30;
+
+    @TextProperty({
+        name: '   sound',
+        description: 'The sound to play when the golden fish alert is triggered. (default: note.pling)',
+        category: 'Crimson Isles',
+        subcategory: 'Fishing',
+        placeholder: 'note.pling',
+        triggerActionOnInitialization: false,
+    })
+    goldenFishSound = 'note.pling';
+
     //MUSHROOM DESERT
 
     //Trapper
@@ -68,6 +117,13 @@ class Settings {
 
     constructor() {
         this.initialize(this);
+        //Crimson Isles
+        //Fishing
+        this.addDependency('● Golden fish cast alert', 'Golden fish timer');
+        this.addDependency('   volume', '● Golden fish cast alert');
+        this.addDependency('   sound', '● Golden fish cast alert');
+        this.addDependency('   pitch', '● Golden fish cast alert');
+        this.addDependency('   time', '● Golden fish cast alert');
     }
 }
 

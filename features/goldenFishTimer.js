@@ -24,6 +24,7 @@ let casting = false;
 let spawned = false;
 let active = false;
 let timeElapsed, timeSinceCast;
+let alertPlayed = false;
 
 register('worldLoad', () => {
     display.hide();
@@ -40,7 +41,8 @@ register("step", () => {
 
     if (Player.getPlayer() != null && Player.getPlayer().field_71104_cf != null) {
         active = true;
-        
+        alertPlayed = false;
+
         if (fishingStart == -1) {
             fishingStart = Date.now();
         }
@@ -65,6 +67,11 @@ register("step", () => {
         active = false;
         fishingStart = -1;
         lastCast = -1;
+    }
+
+    if (settings.goldenFishSoundAlert && (timeLimit - timeSinceCast) / 1000 <= settings.goldenFishSoundTime && !alertPlayed) {
+        alertPlayed = true;
+        World.playSound(settings.goldenFishSound, settings.goldenFishSoundVolume, settings.goldenFishSoundPitch);
     }
 }).setFps(5)
 
