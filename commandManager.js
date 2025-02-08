@@ -4,9 +4,6 @@ import { editGui } from './utils/gui';
 
 register('command', (commandName, ...args) => {
     switch (commandName) {
-        case 'blastjegay':
-            ChatLib.chat(`${constants.PREFIX} §c§fr fr`);
-            break;
         case 'gui':
             editGui.open();
             break;

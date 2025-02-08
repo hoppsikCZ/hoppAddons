@@ -1,8 +1,8 @@
 {
     "name": "hoppsikAddons",
     "creator": "hoppsik",
-    "description": "WTF am i doing?",
-    "version": "1.0.0",
+    "description": "Adds features I thought would be cool",
+    "version": "1.1.0",
     "entry": "index.js",
     "requires": [
       "RenderLib",
