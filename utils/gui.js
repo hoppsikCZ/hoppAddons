@@ -7,7 +7,7 @@ let relX = 0;
 let relY = 0;
 let activeGuis = [];
 
-export function createText(key, text, offsetX, offsetY, alignRight = false, shadow = true) {
+export function createText(key, text, offsetX, offsetY, align = "LEFT", shadow = true) {
     if (guiData[key] == undefined) {
         guiData[key] = {
             x: 0,
@@ -27,8 +27,7 @@ export function createText(key, text, offsetX, offsetY, alignRight = false, shad
     let y = guiData[key].y + offsetY * guiData[key].scale;
 
     let textToDraw = new Text(text, x, y).setShadow(shadow).setScale(guiData[key].scale);
-    if (alignRight)
-        textToDraw.setAlign('RIGHT');
+    textToDraw.setAlign(align);
     textToDraw.draw();
 
     if (guiData[key].width < textToDraw.getWidth() / guiData[key].scale + offsetX) {

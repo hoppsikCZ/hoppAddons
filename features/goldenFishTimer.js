@@ -14,7 +14,7 @@ display.setRenderLoc(430, 130);
 display.setBackgroundColor(Renderer.color(0, 0, 0, 50));
 display.setBackground('full');
 
-const spawnTime = 900000;
+const spawnTime = 480000;
 const timeLimit = 180000; 
 const spawnedTimeLimit = 60000;
 
@@ -71,7 +71,7 @@ register("step", () => {
 
     if (settings.goldenFishSoundAlert && (timeLimit - timeSinceCast) / 1000 <= settings.goldenFishSoundTime && !alertPlayed) {
         alertPlayed = true;
-        World.playSound(settings.goldenFishSound, settings.goldenFishSoundVolume, settings.goldenFishSoundPitch);
+        World.playSound(settings.alertsSound, settings.alertsVolume, settings.alertsPitch);
     }
 }).setFps(5)
 
@@ -83,21 +83,21 @@ register('renderOverlay', () => {
         createText(key, `§eCast until:`, 0, 20);
 
         if (casting) {
-            createText(key, `§a${spawned ? 'Reling in!' : 'Casting!'}`, 130, 20, true);
+            createText(key, `§a${spawned ? 'Reling in!' : 'Casting!'}`, 130, 20, 'RIGHT');
         }
         else {
             createText(key, `${timeSinceCast < (spawned ? spawnedTimeLimit : timeLimit) / 3 ? '§a' : 
                 (timeSinceCast < (spawned ? spawnedTimeLimit : timeLimit) / 3 * 2 ? '§e' : '§c')} ${
                 Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 / 60)}m ${
-                Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 % 60).toString().padStart(2, '0')}s`, 130, 20, true);
+                Math.floor(((spawned ? spawnedTimeLimit : timeLimit) - timeSinceCast) / 1000 % 60).toString().padStart(2, '0')}s`, 130, 20, 'RIGHT');
         }
 
         if (spawned) {
-            createText(key, `§a§lSPAWNED!`, 130, 10, true);
+            createText(key, `§a§lSPAWNED!`, 130, 10, 'RIGHT');
         } else if (timeElapsed < spawnTime) {
-            createText(key, `§6${Math.floor((spawnTime - timeElapsed) / 1000 / 60).toString().padStart(2, ' ')}m ${Math.floor((spawnTime - timeElapsed) / 1000 % 60).toString().padStart(2, '0')}s`, 130, 10, true);
+            createText(key, `§6${Math.floor((spawnTime - timeElapsed) / 1000 / 60).toString().padStart(2, ' ')}m ${Math.floor((spawnTime - timeElapsed) / 1000 % 60).toString().padStart(2, '0')}s`, 130, 10, 'RIGHT');
         } else {
-            createText(key, `§a§lNOW! §6${Math.round((timeElapsed - spawnTime) / 300000 * 100)}%`, 130, 10, true);
+            createText(key, `§a§lNOW! §6${Math.round((timeElapsed - spawnTime) / 240000 * 100)}%`, 130, 10, 'RIGHT');
         }
     }
 });
