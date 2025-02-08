@@ -18,7 +18,7 @@ import {
 // category list.
 // The 3rd parameter is an object that determines the sorting order of the categories.
 
-@Vigilant('hoppsikAddons', 'hoppsikAddons v1.0.0', {
+@Vigilant('hoppsikAddons', 'hoppsikAddons v1.1.0', {
     getCategoryComparator: () => (a, b) => {
         // By default, categories, subcategories, and properties are sorted alphabetically.
         // You can override this behavior by returning a negative number if a should be sorted before b,
