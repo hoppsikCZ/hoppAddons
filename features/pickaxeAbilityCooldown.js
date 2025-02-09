@@ -2,6 +2,7 @@ import { pickaxeAbilityCooldowns } from "../utils/constants";
 import { worldData } from "../utils/worldData";
 import { createText } from "../utils/gui";
 import settings from "../settings";
+import constants from "../utils/constants";
 
 const key = 'abilityCooldown';
 
@@ -26,9 +27,12 @@ register('step', () => {
 
     if (settings.abilitySoundAlert && alertsReady && !alertPlayed) {
         alertPlayed = true;
-        World.playSound(settings.alertsSound, settings.alertsVolume, settings.alertsPitch);
+
+        if ((!settings.abilityMiningOnly || constants.miningIslands.includes(worldData.island))) {
+            World.playSound(settings.alertsSound, settings.alertsVolume, settings.alertsPitch);
+        }
     }
-    
+
     if (!insineMineshaft && worldData.island === 'Mineshaft') {
         insineMineshaft = true;
         coolDown = 0;
@@ -36,7 +40,7 @@ register('step', () => {
 }).setFps(5);
 
 register('renderOverlay', () => {
-    if (!worldData.skyblock || !settings.abilityTimer) return;
+    if (!worldData.skyblock || !settings.abilityTimer || (settings.abilityMiningOnly && !constants.miningIslands.includes(worldData.island))) return;
 
     if (ability !== '') {
         let remaining = Math.ceil((lastAbilityUse + coolDown - Date.now()) / 1000);

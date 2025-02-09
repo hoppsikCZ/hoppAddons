@@ -149,6 +149,13 @@ class Settings {
     noCotm = false;
 
     @SwitchProperty({
+        name: '● show only in mining islands',
+        category: 'Mining',
+        subcategory: 'Timers',
+    })
+    abilityMiningOnly = true;
+
+    @SwitchProperty({
         name: '● Ability ready sound alert',
         description: 'Toggle the ability ready alert.',
         category: 'Mining',
