@@ -107,14 +107,14 @@ register('chat', (rarity) => {
     fishingStart = -1;
     lastCast = -1;
     spawned = false;
-}).setChatCriteria('TROPHY FISH! You caught a Golden Fish ${rarity}.');
+}).setCriteria('TROPHY FISH! You caught a Golden Fish ${rarity}.');
 
 register('chat', (rarity) => {
     active = false;
     fishingStart = -1;
     lastCast = -1;
     spawned = false;
-}).setChatCriteria('The Golden Fish swims back beneath the lava...');
+}).setCriteria('The Golden Fish swims back beneath the lava...');
 
 register("chat", () => {
     spawned = true;

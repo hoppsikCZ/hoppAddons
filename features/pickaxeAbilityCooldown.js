@@ -18,6 +18,8 @@ let ability = '';
 let alertPlayed = true;
 let textAlertStart = 0;
 let alertsReady = false;
+let lastRightClickedPickaxe = null;
+let insineMineshaft = false;
 
 register('step', () => {
     alertsReady = (lastAbilityUse + coolDown - Date.now()) / 1000 <= 0;
@@ -27,7 +29,11 @@ register('step', () => {
         World.playSound(settings.alertsSound, settings.alertsVolume, settings.alertsPitch);
     }
 
-
+    if (!insineMineshaft && (/*worldData.island === 'Mineshaft' || */worldData.area === 'Glacite Mineshafts')) {
+        ChatLib.chat(worldData.island + " " + worldData.area);
+        insineMineshaft = true;
+        coolDown = 0;
+    }
 }).setFps(5);
 
 register('renderOverlay', () => {
@@ -52,9 +58,10 @@ register('renderOverlay', () => {
 register('chat', (ab) => {
     ability = ab;
     lastAbilityUse = Date.now();
-    let heldItem = Player.getHeldItem();
-    if (heldItem != null) {
-        let lore = heldItem.getLore()
+    if (lastRightClickedPickaxe == null)
+        lastRightClickedPickaxe = Player.getHeldItem();
+    if (lastRightClickedPickaxe != null) {
+        let lore = lastRightClickedPickaxe.getLore()
         bcheese = false;
         fuelTank = 1;
         lore.forEach(line => {
@@ -75,36 +82,45 @@ register('chat', (ab) => {
     alertPlayed = false;
     alertsReady = false;
     textAlertStart = 0;
-}).setChatCriteria('You used your ${ab} Pickaxe Ability!');
+}).setCriteria('You used your ${ab} Pickaxe Ability!');
 
 register('chat', () => {
     mineshaftMayham = true;
-}).setChatCriteria('MAYHEM! Your Pickaxe Ability cooldown was reduced from your Mineshaft Mayhem perk!');
+}).setCriteria('MAYHEM! Your Pickaxe Ability cooldown was reduced from your Mineshaft Mayhem perk!');
 
 register('chat', (buff, event) => {
     if (ChatLib.removeFormatting(ChatLib.getChatMessage(event)) === "New buff: -20% Pickaxe Ability cooldowns.") skyMall = true;
     else skyMall = false;
 
-}).setChatCriteria('New buff: ${buff}');
+}).setCriteria('New buff: ${buff}');
 
 register('chat', (ab) => {
     ability = ab;
-}).setChatCriteria('You selected ${ab} as your Pickaxe Ability. This ability will apply to all of your pickaxes!');
+}).setCriteria('You selected ${ab} as your Pickaxe Ability. This ability will apply to all of your pickaxes!');
 
 register('chat', () => {
     ability = '';
     skyMall = false;
     skyMallEnabled = true;
-}).setChatCriteria('Reset your Heart of the Mountain! Your Perks and Abilities have been reset.');
+}).setCriteria('Reset your Heart of the Mountain! Your Perks and Abilities have been reset.');
 
 register('chat', (status) => {
     if (status === 'Enabled') skyMallEnabled = true;
     else if (status === 'Disabled') skyMallEnabled = false;
-}).setChatCriteria('${status} Sky Mall');
+}).setCriteria('${status} Sky Mall');
 
 register('worldLoad', () => {
+    insineMineshaft = false;
     mineshaftMayham = false;
-    coolDown = 0;
+});
+
+register("clicked", (mouseX, mouseY, button, isButtonDown) => {
+    if (button !== 1 || !isButtonDown) return;
+    let heldItem = Player.getHeldItem();
+
+    if (heldItem == null) return;
+    if (heldItem.getLore().map(line => ChatLib.removeFormatting(line)).includes("⦾ Ability: Pickobulus  RIGHT CLICK"))
+        lastRightClickedPickaxe = Player.getHeldItem();
 });
 
 function calculatePetMultiplier() {
@@ -118,6 +134,7 @@ function calculatePetMultiplier() {
     return pet;
 }
 
-function getCooldown(ab) {
-    return pickaxeAbilityCooldowns[ab][(settings.noCotm ? 0 : 1) + (bcheese ? 1 : 0)] * pet * fuelTank * ((skyMall && skyMallEnabled) ? 0.8 : 1) * (mineshaftMayham ? 0.75 : 1) * 1000;
+function getCooldown() {
+    lastRightClickedPickaxe = null;
+    return pickaxeAbilityCooldowns[ability][(settings.noCotm ? 0 : 1) + (bcheese ? 1 : 0)] * pet * fuelTank * ((skyMall && skyMallEnabled) ? 0.8 : 1) * (mineshaftMayham ? 0.75 : 1) * 1000;
 }
