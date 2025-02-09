@@ -28,9 +28,8 @@ register('step', () => {
         alertPlayed = true;
         World.playSound(settings.alertsSound, settings.alertsVolume, settings.alertsPitch);
     }
-
-    if (!insineMineshaft && (/*worldData.island === 'Mineshaft' || */worldData.area === 'Glacite Mineshafts')) {
-        ChatLib.chat(worldData.island + " " + worldData.area);
+    
+    if (!insineMineshaft && worldData.island === 'Mineshaft') {
         insineMineshaft = true;
         coolDown = 0;
     }
