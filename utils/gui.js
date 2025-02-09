@@ -67,7 +67,7 @@ register('renderOverlay', () => {
                 let rect = new Rectangle(Renderer.color(0, 0, 0, 70) , guiData[key].x, guiData[key].y, guiData[key].width * guiData[key].scale, guiData[key].height * guiData[key].scale);
                 rect.draw();
 
-                let text = new Text(`§f${key} x: ${guiData[key].x} y: ${guiData[key].y} scale: ${guiData[key].scale.toFixed(2)}`, guiData[key].x, guiData[key].y - 10).setShadow(true);
+                let text = new Text(`§f${key} x: ${guiData[key].x} y: ${guiData[key].y} scale: ${guiData[key].scale.toFixed(2)}`, guiData[key].x, guiData[key].y + (guiData[key].y > 10 ? -10 : guiData[key].height + 10)).setShadow(true);
                 text.draw();
             }
         });

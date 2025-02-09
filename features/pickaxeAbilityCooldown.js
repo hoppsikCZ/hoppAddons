@@ -50,7 +50,7 @@ register('renderOverlay', () => {
     if (settings.abilityTextAlert && alertsReady) {
         if (textAlertStart == 0) textAlertStart = Date.now();
         if (Date.now() - textAlertStart <= 3000) {
-            createText("pickaxeAbilityText", `§b§l${ability}`, 0, 0, "CENTER");
+            new Text(`§b§l${ability}`, Renderer.screen.getWidth() / 2, Renderer.screen.getHeight() / 2.8).setAlign('CENTER').setScale(Renderer.screen.getHeight() / 360 * 4).setShadow(true).draw();
         }
     }
 });
