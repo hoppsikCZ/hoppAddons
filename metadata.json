@@ -2,7 +2,7 @@
     "name": "hoppsikAddons",
     "creator": "hoppsik",
     "description": "Adds features I thought would be cool",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "entry": "index.js",
     "requires": [
       "RenderLib",

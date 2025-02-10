@@ -1,5 +1,5 @@
 export const PREFIX = '§7§l[§4HA§7]§r';
-export const miningIslands = ["Dwarven Mines", "Glacite Mineshaft", "Deep Caverns", "Gold Mine"];
+export const miningIslands = ["Dwarven Mines", "Deep Caverns", "Gold Mine", "Mineshaft", "Crystal Hollows"];
 export const pickaxeAbilityCooldowns = {
     "Mining Speed Boost": [120, 120, 120],
     "Pickobulus": [60, 50, 40],
