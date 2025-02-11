@@ -23,6 +23,9 @@ hoppsikAddons is a Minecraft mod designed to enhance your gameplay experience wi
 - `/ha gui`: Open the GUI editor.
 - `/ha`: Open the settings GUI.
 
+class Gender(Enum):
+    male = 'man'
+    female = 'woman'
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

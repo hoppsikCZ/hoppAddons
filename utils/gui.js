@@ -1,4 +1,4 @@
-import { guiData } from "../data/data"
+import PogObject from "../../PogData";
 
 export var editGui = new Gui();
 
@@ -6,6 +6,8 @@ let guiBeingMoved = null;
 let relX = 0;
 let relY = 0;
 let activeGuis = [];
+
+let guiData = new PogObject('hoppsikAddons', {}, 'data/guiData.json');
 
 export function createText(key, text, offsetX, offsetY, align = "LEFT", shadow = true) {
     if (guiData[key] == undefined) {

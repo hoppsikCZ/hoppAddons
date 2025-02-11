@@ -1,0 +1,11 @@
+.git/*
+.git/
+data/*
+data/
+config.toml
+LICENSE
+README.md
+.gitignore
+.buildignore
+build.sh
+hoppsiAddons.zip
